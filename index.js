@@ -1,10 +1,16 @@
 const express = require("express");
-const cors = require("cors");
+// const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
-
+// app.use(cors());
+const cors = (req, res, next) => {
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Access-Control-Allow-Headers", "content-type");
+	res.setHeader("Access-Control-Allow-Methods", "*");
+	next();
+};
+app.use(cors);
 const tasks = [];
 class Task {
 	constructor(id, description) {
