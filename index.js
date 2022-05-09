@@ -29,11 +29,13 @@ app.get("/tasks", (req, res) => {
 		return;
 	}
 	res.status(200).json(tasks);
+	return;
 });
 app.get("/tasks/:id", (req, res) => {
 	const { id } = req.params;
 	const task = tasks.find((e) => e.id == id);
-	task ? res.status(200).json(task) : res.status(404).json("Task not found");
+	task ? res.json(task) : res.status(404).json({ error: "Task not found" });
+	return;
 });
 app.post("/tasks", (req, res) => {
 	const { description } = req.body;
@@ -41,29 +43,35 @@ app.post("/tasks", (req, res) => {
 	tasks.push(task);
 	_id++;
 	res.status(201).json(task);
+	return;
 });
 app.put("/tasks/:id", (req, res) => {
 	const { id } = req.params;
 	const task = tasks.find((e) => e.id == id);
-	if (task) {
-		const { description, done = false } = req.body;
-		task.description = description;
-		task.done = done;
-		res.status(200).json(task);
+	if (!task) {
+		res.status(404).json("Task not found");
 		return;
 	}
-	res.status(404).json("Task not found");
+	const { description, done = false } = req.body;
+	if (description) {
+		task.description = description;
+	}
+	if (task) {
+		task.done = !!done;
+	}
+	res.json(task);
+	return;
 });
 app.delete("/tasks/:id", (req, res) => {
 	const { id } = req.params;
 	let index = tasks.findIndex((i) => i.id == id);
-	index = index + 1;
-	if (index) {
-		tasks.splice(index - 1, 1);
-		res.status(204).json("The task successfully deleted");
+	if (index === -1) {
+		res.status(404).json({ error: "Task not found" });
 		return;
 	}
-	res.status(404).json("Task not found");
+	tasks.splice(index, 1);
+	res.sendStatus(204);
+	return;
 });
 
 app.listen(3000);
