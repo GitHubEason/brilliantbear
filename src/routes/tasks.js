@@ -6,7 +6,7 @@ const taskRouter = express.Router();
 
 taskRouter.get("/", getAllTasks);
 taskRouter.get("/:id", parseId, checkTaskExist, getTaskById);
-taskRouter.put("/:id", parseId, checkTaskExist, updateTaskById);
+taskRouter.put("/:id", parseId, updateTaskById);
 taskRouter.delete("/:id", parseId, checkTaskExist, deleteTaskById);
 taskRouter.post("", creatTask);
 

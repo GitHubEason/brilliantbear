@@ -15,11 +15,6 @@ const updateTaskById = (req, res) => {
 	const task = Task.updateTaskById(id, { description, done });
 	res.json(task);
 };
-const deleteTaskById = (req, res) => {
-	const { id } = req.params;
-	Task.deleteTaskById(id);
-	res.sendStatus(204);
-};
 const creatTask = (req, res) => {
 	const { description } = req.body;
 	if (!description) {
@@ -27,6 +22,11 @@ const creatTask = (req, res) => {
 	}
 	const task = Task.addTask({ description });
 	res.status(201).json(task);
+};
+const deleteTaskById = (req, res) => {
+	const { id } = req.params;
+	Task.deleteTaskById(id);
+	res.sendStatus(204);
 };
 
 module.exports = {
