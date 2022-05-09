@@ -11,6 +11,7 @@ const getTaskById = (req, res) => {
 };
 const updateTaskById = (req, res) => {
 	const { id } = req.params;
+	const { description, done } = req.body;
 	const task = Task.updateTaskById(id, { description, done });
 	res.json(task);
 };
